@@ -37,10 +37,16 @@ def fetch_fastest_lap(session_key, driver_number):
         
     fastest = valid_laps.loc[valid_laps['lap_duration'].idxmin()].copy()
     
-    # Calculate date_end from date_start and lap_duration
-    start_time = pd.to_datetime(fastest['date_start'])
-    duration = pd.to_timedelta(fastest['lap_duration'], unit='s')
-    fastest['date_end'] = (start_time + duration).isoformat()
+    # FIX: Parse date_start as a pandas datetime object
+    start_dt = pd.to_datetime(fastest['date_start'])
+    
+    # FIX: Calculate end time by adding lap_duration (seconds) to the start time
+    end_dt = start_dt + pd.to_timedelta(fastest['lap_duration'], unit='s')
+    
+    # Convert datetimes back into exact ISO strings for the telemetry API query format
+    # Using 'Z' formatting to ensure clean string matching on the API filter
+    fastest['date_start_iso'] = start_dt.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    fastest['date_end_iso'] = end_dt.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     
     return fastest
 

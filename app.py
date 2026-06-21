@@ -20,8 +20,8 @@ if st.sidebar.button("Stream & Process Data"):
             lap2 = fetch_fastest_lap(session_key, driver2)
             
             # 2. Extract telemetry within those boundaries
-            raw_tel1 = fetch_raw_telemetry(session_key, driver1, lap1['date_start'], lap1['date_end'])
-            raw_tel2 = fetch_raw_telemetry(session_key, driver2, lap2['date_start'], lap2['date_end'])
+            raw_tel1 = fetch_raw_telemetry(session_key, driver1, lap1['date_start_iso'], lap1['date_end_iso'])
+            raw_tel2 = fetch_raw_telemetry(session_key, driver2, lap2['date_start_iso'], lap2['date_end_iso'])
             
             # 3. Process data traces through custom math engine
             tel1 = process_raw_telemetry(raw_tel1)
