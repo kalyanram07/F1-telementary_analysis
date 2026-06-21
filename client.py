@@ -35,7 +35,13 @@ def fetch_fastest_lap(session_key, driver_number):
     if valid_laps.empty:
         raise ValueError(f"No valid timed laps found for driver {driver_number}.")
         
-    fastest = valid_laps.loc[valid_laps['lap_duration'].idxmin()]
+    fastest = valid_laps.loc[valid_laps['lap_duration'].idxmin()].copy()
+    
+    # Calculate date_end from date_start and lap_duration
+    start_time = pd.to_datetime(fastest['date_start'])
+    duration = pd.to_timedelta(fastest['lap_duration'], unit='s')
+    fastest['date_end'] = (start_time + duration).isoformat()
+    
     return fastest
 
 def fetch_raw_telemetry(session_key, driver_number, start_time, end_time):
