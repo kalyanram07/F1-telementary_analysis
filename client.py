@@ -38,7 +38,7 @@ def fetch_fastest_lap(session_key, driver_number):
     fastest = valid_laps.loc[valid_laps['lap_duration'].idxmin()].copy()
     
     # Calculate the datetime boundaries safely
-    start_dt = pd.to_datetime(fastest['date_start'])
+    start_dt = pd.to_datetime(fastest['date_start'], format='ISO8601')
     end_dt = start_dt + pd.to_timedelta(fastest['lap_duration'], unit='s')
     
     # Convert datetimes into explicit ISO strings for the telemetry queries

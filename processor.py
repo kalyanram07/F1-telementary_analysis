@@ -10,7 +10,7 @@ def process_raw_telemetry(df):
     df = df.copy()
 
     # Convert ISO strings to datetime objects and sort sequentially
-    df['date'] = pd.to_datetime(df['date'])
+    df['date'] = pd.to_datetime(df['date'], format='ISO8601')
     df = df.sort_values('date').reset_index(drop=True)
     
     # Calculate time differentials (dt) in seconds between data points
